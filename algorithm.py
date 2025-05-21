@@ -45,3 +45,8 @@ print('True values:', label_test.values.ravel())
 print('Mean Squared Error:', mean_squared_error(label_test.values.ravel(), label_predicted))
 print('Mean Absolute Error:', mean_absolute_error(label_test.values.ravel(), label_predicted))
 print('R^2 Score:', r2_score(label_test.values.ravel(), label_predicted))
+
+# Display feature importance (absolute value of coefficients)
+feature_importance = pd.Series(abs(model.coef_), index=features.columns)
+print("Feature importance (by absolute coefficient value):")
+print(feature_importance.sort_values(ascending=False))
