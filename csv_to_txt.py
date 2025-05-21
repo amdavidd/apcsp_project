@@ -1,12 +1,18 @@
 import pandas as pd
-# convert .txt data file to .csv
-input_file = ''
-output_file = 'Dataset/year_predictions.csv'
 
-# Read the text file directly into a DataFrame
-df = pd.read_csv(input_file, delimiter=',')  # Adjust delimiter as needed
+# Extract feature names from the .names file
+features = []
+with open('Dataset/communities.names', 'r') as f:
+    for line in f:
+        if line.startswith('@attribute'):
+            # Get the attribute name (second word)
+            features.append(line.split()[1])
 
-# Write the DataFrame to a CSV file
+# Add the column names to the DataFrame
+input_file = 'Dataset/communities.data'
+output_file = 'Dataset/crimedata.csv'
+
+df = pd.read_csv(input_file, names=features, na_values='?')
+
 df.to_csv(output_file, index=False)
-
 print('Conversion complete!')

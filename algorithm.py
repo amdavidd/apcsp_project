@@ -1,45 +1,47 @@
 import pandas as pd
-import numpy as np
-import csv
-from sklearn.linear_model import LogisticRegression
-from sklearn.preprocessing import LabelEncoder
+from sklearn import tree
+from sklearn.ensemble import RandomForestRegressor
 from sklearn.model_selection import train_test_split
-from sklearn.metrics import confusion_matrix
+
 
 
 #get csv data
-df = pd.read_csv('Dataset/year_predictions_csv')
-print(df.head())
+features = pd.read_csv('Dataset/cleaned_crimedata_features.csv')
+target = pd.read_csv('Dataset/cleaned_crimedata_target.csv')
 
-# #prepare data
-# train_data = genData['Name']
-# train_labels = genData['Gender']
-
-
-# #use label encoder to convert it into numerical values
-# label_encoder = LabelEncoder()
-# train_data_encoded = label_encoder.fit_transform(train_data)
-# train_data_encoded = train_data_encoded.reshape(-1, 1)
-
-# feature_train, feature_test, label_train, label_test = train_test_split(train_data_encoded, train_labels, test_size = 0.25, random_state = 42)
+#print(features.dtypes)
+#print(target)
 
 
-# #fit the model
-# model = LogisticRegression()
-# model.fit(feature_train, label_train)
+feature_train, feature_test, label_train, label_test = train_test_split(features, target, test_size = 0.2, random_state = 42)
 
-# label_predicted = model.predict(feature_test)
-# print('predicted classes: ', label_predicted)
+forest = RandomForestRegressor(n_estimators=1000, random_state=42)
 
-# print('True classes:', label_test)
+forest.fit(feature_train, label_train.values.ravel())
 
-# print(confusion_matrix(label_predicted, label_test))
+#print feature importances
+importances = pd.Series(forest.feature_importances_, index=features.columns)
+print(importances.sort_values(ascending=False))
 
+#get features
+label_predicted = forest.predict(feature_test)
+#print('predicted classes: ', label_predicted)
+#print('True classes:', label_test.values.ravel())
 
+print(forest.score(feature_test, label_test.values.ravel()))
 
+import pandas as pd
+from sklearn.linear_model import LinearRegression
+from sklearn.metrics import mean_squared_error, mean_absolute_error, r2_score
 
-# print('done')
+#fit the model
+model = LinearRegression()
+model.fit(feature_train, label_train.values.ravel())
 
+label_predicted = model.predict(feature_test)
+print('Predicted values:', label_predicted)
+print('True values:', label_test.values.ravel())
 
-
-
+print('Mean Squared Error:', mean_squared_error(label_test.values.ravel(), label_predicted))
+print('Mean Absolute Error:', mean_absolute_error(label_test.values.ravel(), label_predicted))
+print('R^2 Score:', r2_score(label_test.values.ravel(), label_predicted))
