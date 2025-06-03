@@ -3,7 +3,7 @@ from algorithm.py import forest, linear, neighbors
 import json
 
 # Read the JSON file
-with open('data.json', 'r') as file:
+with open('user_input.json', 'r') as file:
     input_array = json.load(file)
 
 # Print the array
@@ -19,6 +19,12 @@ knn_prediction = neighbors.predict(input_array)
 
 print('Random Forest Prediction:', forest_prediction)
 print('Linear Regression Prediction:', linear_prediction)
-print('KNN Prediction:', knn_prediction)
+print('KNN Prediction:', knn_prediction))
 
-classifier.predict()
+predictions = [forest_prediction, linear_prediction, knn_prediction]
+
+# Write to JSON file
+with open('predictions.json', 'w') as json_file:
+    json.dump(predictions, json_file, indent = 4)
+
+print("Predictions saved to predictions.json")
