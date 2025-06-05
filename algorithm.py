@@ -13,7 +13,7 @@ target = pd.read_csv('Dataset/cleaned_crimedata_target.csv')
 feature_train, feature_test, label_train, label_test = train_test_split(features, target, test_size=0.2, random_state=42)
 
 # Random Forest Regressor
-forest = RandomForestRegressor(n_estimators=1000, random_state=42)
+forest = RandomForestRegressor(n_estimators=250, random_state=42)
 forest.fit(feature_train, label_train.values.ravel())
 
 # Predictions with Random Forest
@@ -43,6 +43,5 @@ neighbors.fit(feature_train, label_train.values.ravel())
 
 # Predictions with KNN
 label_predicted_knn = neighbors.predict(feature_test)
-print('KNN Best n_neighbors:', best_n_neighbors)
 print('KNN R^2 Score:', neighbors.score(feature_test, label_test.values.ravel()))
-
+print('KNN Best n_neighbors:', best_n_neighbors)

@@ -1,4 +1,4 @@
-from algorithm.py import forest, linear, neighbors
+from algorithm import forest, linear, neighbors
 
 import json
 
@@ -19,9 +19,13 @@ knn_prediction = neighbors.predict(input_array)
 
 print('Random Forest Prediction:', forest_prediction)
 print('Linear Regression Prediction:', linear_prediction)
-print('KNN Prediction:', knn_prediction))
+print('KNN Prediction:', knn_prediction)
 
-predictions = [forest_prediction, linear_prediction, knn_prediction]
+predictions = [
+    float(forest_prediction[0]),  # Extract the first value from the list
+    float(linear_prediction[0]),   # Extract the first value from the list
+    float(knn_prediction[0])       # Extract the first value from the list
+]
 
 # Write to JSON file
 with open('predictions.json', 'w') as json_file:
